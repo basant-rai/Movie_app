@@ -1,0 +1,27 @@
+.image-container{
+    position:relative;
+    transition: transform 0.5s;
+}
+.image-container:hover{
+    cursor: pointer;
+    transform: scale(1.1);  
+}
+
+.image-body{
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    color: rgb(231, 221, 221);
+    opacity: 0;
+
+}
+.image-container:hover .image-body{
+    opacity:1
+}
+.image-content{
+    position: relative;
+    top:35%
+    /* margin-top: 100px !important; */
+}
