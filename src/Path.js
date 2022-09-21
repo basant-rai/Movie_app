@@ -16,18 +16,20 @@ const Path = () => {
       <Router>
         {/* <Nav /> */}
         <Routes>
-          <Route path='/' element={<Home/>} />
-          <Route path='/popular' element={<Popular/>}/>
-          <Route path='/upcoming' element={<Upcoming/>}/>
-          <Route path='/trendingday' element={<TrendingDay/>}/>
-          <Route path='/trendingweek' element={<TrendingWeek/>}/>
-          <Route path='/signup' element={<Register/>}/>
-          <Route path='/signin' element={<Signin/>}/>
-         
-            <Route path='/getdetails/:id' element={<Play/>}/>
-            <Route path='/popular/getdetails/:id' element={<Play/>}/>
+          <Route path='/' element={<Home />} />
+          <Route path='/popular' element={<Popular />} />
+          <Route path='/upcoming' element={<Upcoming />} />
+          <Route path='/trendingday' element={<TrendingDay />} />
+          <Route path='/trendingweek' element={<TrendingWeek />} />
+          <Route path='/signup' element={<Register />} />
+          <Route path='/signin' element={<Signin />} />
 
-        
+          <Route path='/getdetails/:id' element={<Play />} />
+          <Route path='/popular/getdetails/:id' element={<Play />} />
+          <Route path='/upcoming/getdetails/:id' element={<Play />} />
+
+
+
         </Routes>
       </Router>
     </>

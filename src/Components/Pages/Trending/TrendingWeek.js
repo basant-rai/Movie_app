@@ -21,7 +21,7 @@ const TrendingWeek = () => {
     return (
         <>
         <Nav/>
-            <div className='row mt-3'>
+            <div className='row mt-4'>
                 <div className='col-1'>
                     <Sidebar week />
                 </div>
