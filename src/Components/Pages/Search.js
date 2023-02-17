@@ -1,19 +1,21 @@
-import React, { useCallback, useRef } from 'react'
-import { KEY } from '../../config'
-import Nav from '../layout/Nav'
-import MovieCard from '../layout/MovieCard'
+import { useRef, useCallback } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
+import MovieCard from '../layout/MovieCard'
+import { KEY } from '../../config'
+import Nav from '../layout/Nav'
 import MovieBody from '../layout/MovieBody'
+import { useLocation } from 'react-router-dom'
 
-const Popular = () => {
+const Search = () => {
+    const search = useLocation().search;
+    const param = new URLSearchParams(search).get("search");
 
-    const fetchData = async (page) => {
-        const { data } = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&language=en-US&page=${page}`)
+    const fetchData = async (page, searchParam) => {
+        const { data } = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${searchParam}&page=${page}&include_adult=false`)
         const results = data.results
         return results
     }
-
     const {
         fetchNextPage, //function 
         hasNextPage, // boolean
@@ -21,11 +23,12 @@ const Popular = () => {
         data,
         status,
         error
-    } = useInfiniteQuery('popular', ({ pageParam = 1 }) => fetchData(pageParam), {
+    } = useInfiniteQuery('search', ({ pageParam = 1, searchParam = param }) => fetchData(pageParam, searchParam), {
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.length ? allPages.length + 1 : undefined
-        }
+        },
     })
+
     const intObserver = useRef()
 
     const lastMovieRef = useCallback(movie_list => {
@@ -53,25 +56,13 @@ const Popular = () => {
             return <MovieCard key={movie.id} movie={movie} />
         })
     })
+
     return (
         <>
             <Nav />
-            {/* <div className='row'>
-                <div className='col-1'>
-                    <Sidebar popular />
-                </div>
-                <div className='col-lg-11 col-md-10 mt-4 movie-list'>
-                    <div className='row row-cols-lg-6'>
-                        {content}
-                        {isFetchingNextPage && <p className="center">Loading...</p>}
-
-                    </div>
-                </div>
-            </div> */}
-            <MovieBody content={content} isFetchingNextPage={isFetchingNextPage}/>
-
+            <MovieBody content={content} isFetchingNextPage={isFetchingNextPage} />
         </>
     )
 }
-
-export default Popular
+export default Search
+  //

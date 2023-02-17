@@ -1,33 +1,39 @@
 import { API } from "../config"
 
-export const signUp = (user_name,email,password,address,number)=>{
+export const signUp = async (user_name,email,password,address,number)=>{
     let user = {user_name,email,password,address,number}
     console.log(user)
-    return fetch(`${API}/register`,{
-        method:"POST",
-        headers:{
-            Accept:"application/json",
-            "Content-Type":"Application/json"
-        },
-        body:JSON.stringify(user)
-    })
-    .then(res=>res.json())
-    .catch(err=>console.log(err))
+    try {
+        const res = await fetch(`${API}/register`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "Application/json",
+            },
+            body: JSON.stringify(user)
+        })
+        return await res.json()
+    } catch (err) {
+        return err
+    }
 }
 
-export const logIn = (email,password)=>{
+export const logIn = async (email,password)=>{
     let user_login ={email,password}
-    console.log(user_login);
-    return fetch(`${API}/signin`,{
-        method:"POST",
-        headers:{
-            Accept:"application/json",
-            "Content-Type":"Application/json"
-        },
-        body:JSON.stringify(user_login)
-    })
-    .then(res=>res.json())
-    .catch(err=>console.log(err))
+    try {
+        const res = await fetch(`${API}/signin`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "Application/json"
+            },
+            body: JSON.stringify(user_login)
+        })
+         const data = await res.json();
+        return data
+    } catch (err) {
+        return err;
+    }
 }
 
 export const authenticate =(data)=>{

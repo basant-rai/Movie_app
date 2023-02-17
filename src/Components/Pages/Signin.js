@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { authenticate, isAuthenticated, logIn } from '../../Api/userApi';
 import Nav from '../layout/Nav'
 
@@ -8,15 +8,16 @@ const Signin = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
-    const { user } = isAuthenticated();
+    const { token } = isAuthenticated();
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = useCallback(async (e) => {
         e.preventDefault();
-
-        logIn(email, password)
+        setError('');
+        await logIn(email, password)
             .then(data => {
                 if (data.error) {
+                    console.log(data.error)
                     setError(data.error);
                     setSuccess(false);
                 } else {
@@ -27,51 +28,58 @@ const Signin = () => {
                     setPassword('');
                 }
             })
-            .catch(err => console.log(err))
-    }
+            .catch(err => { throw err })
+    }, [email, password])
 
     const showError = () => {
         if (error) {
-            return <div className='alert alert-danger'>{error}</div>
+            return <div className='alert alert-danger text-black'>{error}</div>
         }
     }
     const showSuccess = () => {
         if (success) {
-            if (user) {
-                return navigate('/')
+            if (token) {
+                return navigate('/profile')
             }
-            // else{
-            //     return navigate('/')
-            // }
         }
     }
     return (
-        <>
+        <div className=''>
             <Nav />
-            <main className="form-signin w-25 mx-auto mt-5 rounded-5 p-5" style={{ border: "2px solid white" }}>
-                <form>
-                    {showError()}
-                    {showSuccess()}
-                    <h1 className="h3 mb-3 fw-normal text-white text-center">Please sign in</h1>
-                    <div className="form-floating">
-                        <input type="email" className="form-control" id="floatingInputEmail" placeholder="Enter your email address" onChange={e => setEmail(e.target.value)} value={email} />
-                        <label htmlFor="floatingInputEmail">Email address</label>
-                    </div>
+            <div className='pt-5 px-5 px-sm-0' >
+                <div className='sign-in-up mx-auto pt-5'>
+                    <main className="form-signin  mt-5 rounded-5 p-5" style={{ border: "2px solid white" }}>
+                        <form>
+                            <h1 className="h3 mb-1 fw-normal text-white text-center">Sign in</h1>
+                            <p className='text-white text-center mb-3'>Don't have account? <Link to='/signup' className='text-primary text-underline'>register</Link></p>
+                            <div className="form-floating">
+                                <input type="email" className="form-control" id="floatingInputEmail" placeholder="Enter your email address" onChange={e => setEmail(e.target.value)} value={email} required />
+                                <label htmlFor="floatingInputEmail">Email address</label>
+                            </div>
 
-                    <div className="form-floating my-2">
-                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={e => setPassword(e.target.value)} value={password} />
-                        <label htmlFor="floatingPassword">Password</label>
-                    </div>
+                            <div className="form-floating my-2">
+                                <input type="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={e => setPassword(e.target.value)} value={password} required />
+                                <label htmlFor="floatingPassword">Password</label>
+                            </div>
 
-                    <div className="checkbox mb-3">
+                            {/* <div className="checkbox mb-3">
                         <label className='text-white'>
                             <input type="checkbox" value="remember-me" /> Remember me
                         </label>
+                    </div> */}
+                            <button className=" btn btn-lg btn-primary" type="submit" onClick={handleLogin} disabled={!email || !password}>Sign in</button>
+                        </form>
+                    </main>
+                    <div className=' mt-2'>
+                        {showError()}
+                        {showSuccess()}
                     </div>
-                    <button className=" btn btn-lg btn-primary" type="submit" onClick={handleLogin}>Sign in</button>
-                </form>
-            </main>
-        </>
+                </div>
+
+            </div>
+
+
+        </div>
     )
 }
 

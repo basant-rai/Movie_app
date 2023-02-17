@@ -1,210 +1,81 @@
+import axios from 'axios'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { Link, useLocation } from 'react-router-dom'
+import { KEY } from '../../config'
 
-const Sidebar = ({ toprated, popular, upcoming, trending, day, week }) => {
+
+const sideLink = [
+    { name: 'Top rated', href: '/' },
+    { name: 'Popular', href: '/popular' },
+    { name: 'Upcoming', href: '/upcoming' }
+]
+
+const Sidebar = ({ day, week }) => {
+    const pathname = useLocation()
+    const genre_id = new URLSearchParams(pathname.search).get("genre_id");
+
+    const fetchData = async () => {
+        const { data: { genres: genre } } = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${KEY}&language=en-US`)
+        return genre
+    }
+
+    const { data: genres } = useQuery('genres', fetchData)
+
     return (
-        <>
-
-            <div className='position-fixed ' style={{ top: "70px" }} >
-                <div class="position-sticky pt-3 sidebar-sticky">
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            {
-                                toprated ?
-                                    <Link class="nav-link active text-white" aria-current="page" to="/">
-
-                                        Top rated
-                                    </Link> :
-                                    <Link class="nav-link" aria-current="page" to="/">
-
-                                        Top rated
-                                    </Link>
-                            }
-
-                        </li>
-
-                        <li class="nav-item">
-                            {
-                                popular ?
-                                    <Link class="nav-link active" to="/popular">
-
-                                        Popular
-                                    </Link> :
-                                    <Link class="nav-link" to="/popular">
-
-                                        Popular
-                                    </Link>
-                            }
-
-                        </li>
-                        <li class="nav-item">
-                            {
-                                upcoming ?
-                                    <Link class="nav-link active" to="/upcoming">
-
-                                        Upcoming
-                                    </Link> :
-                                    <Link class="nav-link" to="/upcoming">
-
-                                        Upcoming
-                                    </Link>
-                            }
-
-                        </li>
-                        {/* <li class="nav-item ">
-                            {
-                                trending ?
-                                    <Link class="nav-link active" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" to="#collapseExample">
-
-                                        Trending
-                                    </Link> :
-                                    <Link class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" to="#collapseExample">
-
-                                        Trending
-                                    </Link>
-                            }
-                            
-
-                            <ul class="collapse" id="collapseExample">
-                                <li class="nav-item ">
-
-                                    {
-                                        day ?
-                                            <Link class="nav-link active"  to="/trendingday">
-                                                Day
-                                            </Link> :
-                                            <Link class="nav-link "  to="/trendingday">
-                                                Day
-                                            </Link>
-                                    }
-                                </li>
-                                <li class="nav-item ">
-
-
-                                    {
-                                        week ?
-                                            <Link class="nav-link active"  to="/trendingweek">
-                                                week
-                                            </Link> :
-                                            <Link class="nav-link"  to="/trendingweek">
-                                                week
-                                            </Link>
-                                    }
-                                </li>
-                            </ul>
-                        </li> */}
-
-                        <li className='nav-item accordion' id='trending'>
-                                <div class="accordion-header" id="headingOne">
-                                    <Link to='#' class="collapsed nav-link bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Trending
-                                    </Link >
-                                </div>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="trending">
-                                        <ul className=''>
-                                            <li class="nav-item ">
-
-                                                {
-                                                    day ?
-                                                        <Link class="nav-link active" to="/trendingday">
-                                                            Day
-                                                        </Link> :
-                                                        <Link class="nav-link " to="/trendingday">
-                                                            Day
-                                                        </Link>
-                                                }
-                                            </li>
-                                            <li class="nav-item ">
-
-
-                                                {
-                                                    week ?
-                                                        <Link class="nav-link active" to="/trendingweek">
-                                                            week
-                                                        </Link> :
-                                                        <Link class="nav-link" to="/trendingweek">
-                                                            week
-                                                        </Link>
-                                                }
-                                            </li>
-                                        </ul>
-                            
-                                </div>
-
-                        </li>
-                        <div class="b-example-divider"></div>
-                        <br />
-                        <br />
-
-                        <li class="nav-item">
-                            <Link class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" to="#genre">
-                                Genre
+        <div className=" sidebar pe-lg-4" >
+            <ul className="nav nav-pills flex-column">
+                {
+                    sideLink.map((name, i) => (
+                        <li className="nav-item" key={name.name}>
+                            <Link className={`${pathname.pathname === name.href ? 'active text-white' : ''} nav-link`} aria-current="page" to={name.href}>
+                                {name.name}
                             </Link>
-                            <ul class="nav nav-pills flex-column collapse" data-bs-toggle="collapse" id='genre'>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Actions
-                                    </Link>
-                                </li>
-
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                                Adventure
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Animation
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Biography
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Comedy
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Crime
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                                Documentary
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Drama
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Family
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        Fantasy
-                                    </Link>
-                                </li>
-                                <li class="nav-item">
-                                    <Link class="nav-link" to="#">
-                                        History
-                                    </Link>
-                                </li>
-                            </ul>
                         </li>
-
+                    ))
+                }
+                <li className='nav-item accordion' id='trending'>
+                    <div className="accordion-header" id="headingOne">
+                        <Link to='#' className="collapsed nav-link bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Trending
+                        </Link >
+                    </div>
+                    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="trending">
+                        <ul className=''>
+                            <li className="nav-item ">
+                                <Link className={`${pathname.pathname === '/trendingday' && "active"} nav-link`} to="/trendingday">
+                                    Day
+                                </Link>
+                            </li>
+                            <li className="nav-item ">
+                                <Link className={`${pathname.pathname === '/trendingweek' && "active"} nav-link`} to="/trendingweek">
+                                    week
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li className="nav-item">
+                    <div className="genre ">
+                        Genre
+                    </div>
+                    <ul className="nav nav-pills flex-column " >
+                        {
+                            genres &&
+                            genres.map((genre, i) => (
+                                <li key={i + 1} className="nav-item">
+                                    <a
+                                        href={`/genre/?genre=${genre.name}&genre_id=${genre.id}`}
+                                        className={`${parseInt(genre_id) === genre.id ? 'active text-white' : ''} nav-link`}   >
+                                        {genre.name}
+                                    </a>
+                                </li>
+                            ))
+                        }
                     </ul>
-                </div>
-            </div>
-        </>
-
+                </li>
+            </ul>
+        </div>
     )
 }
 

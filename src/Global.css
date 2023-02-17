@@ -1,0 +1,171 @@
+.sidebar {
+  /* background-color: azure; */
+  height: 100vh;
+  /* width: 10%; */
+  /* width:100%; */
+  margin-top: 10px !important;
+  padding: 10px;
+  position: fixed !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.image-container {
+  position: relative;
+  transition: transform 0.5s;
+}
+.image-container:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.image-body {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  color: rgba(231, 221, 221);
+  opacity: 0;
+}
+.image-container:hover .image-body {
+  opacity: 1;
+}
+
+.genre {
+  /* background-color: aliceblue; */
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 50px;
+  border-color: aliceblue;
+  padding: 10px 16px 10px 16px;
+}
+
+.movie-list {
+  /* margin-left: 20px; */
+  padding-left: 20px;
+}
+
+.movie-image {
+  object-fit: cover;
+  max-height: 400px;
+}
+.library-img {
+  object-fit: cover;
+  max-height: 500px;
+  width: 100%;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.desc {
+  font-size: 16px;
+  padding: 10px 0px 50px 0px;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.date span {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.production-image {
+  object-fit: cover;
+  width: 10%;
+  height: 50px;
+}
+
+.bg-image {
+  height: "800px";
+  width: "100%";
+}
+
+.sign-in-up {
+  width: 100% !important;
+}
+
+.profile-dropdown li:hover {
+  background: blue;
+}
+
+.card_package {
+  border:none;
+  padding: 10px 50px;
+}
+
+.card_package::after {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card_package:hover {
+
+
+  transform: scale(1.02, 1.02);
+  -webkit-transform: scale(1.02, 1.02);
+  backface-visibility: hidden; 
+  will-change: transform;
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.75) !important;
+}
+
+.card_package:hover::after {
+  opacity: 1;
+}
+
+.card_package:hover .btn-outline-primary{
+  color:white;
+  background:#007bff;
+}
+
+.gradient-custom {
+  background-color: #1e2129 !important;
+}
+
+@media only screen and (min-width: 575px) {
+  .sign-in-up {
+    width: 80% !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .movie-list {
+    padding-left: 30px;
+  }
+  .sign-in-up {
+    width: 50% !important;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .movie-list {
+    padding-left: 90px;
+  }
+  .bg-image {
+    height: "500px";
+    width: "100%";
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .movie-list {
+    padding-left: 100px;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .movie-list {
+    padding-left: 60px;
+  }
+  .sign-in-up {
+    width: 30% !important;
+  }
+}
